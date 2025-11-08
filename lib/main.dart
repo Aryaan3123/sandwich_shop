@@ -12,7 +12,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Sandwich Shop App',
       home: Scaffold(
-        appBar: AppBar(title: const Text('Sandwich Counter')),
+        appBar: AppBar(title: const Text('Sandwich Counter, this is my own personal branch!')),
         body: const Center(
           child: OrderItemDisplay(5, 'Footlong'),
         ),
