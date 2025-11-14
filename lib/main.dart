@@ -77,10 +77,24 @@ class _OrderScreenState extends State<OrderScreen> {
               children: [
                 ElevatedButton(
                   onPressed: _increaseQuantity,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                    shadowColor: Colors.greenAccent,
+                    elevation: 5, 
+                  ),
                   child: const Text('Add'),
                 ),
                 ElevatedButton(
                   onPressed: _decreaseQuantity,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.black,
+                    textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                    shadowColor: Colors.greenAccent,
+                    elevation: 5, 
+                  ),
                   child: const Text('Remove'),
                 ),
               ],
