@@ -36,15 +36,11 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   void _increaseQuantity() {
-    if (_quantity < widget.maxQuantity) {
-      setState(() => _quantity++);
-    }
+    setState(() => _quantity++);
   }
 
   void _decreaseQuantity() {
-    if (_quantity > 0) {
-      setState(() => _quantity--);
-    }
+    setState(() => _quantity--);
   }
 
   @override
@@ -76,24 +72,28 @@ class _OrderScreenState extends State<OrderScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: _increaseQuantity,
+                  // Set onPressed to null when max quantity is reached
+                  onPressed:
+                      _quantity < widget.maxQuantity ? _increaseQuantity : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     foregroundColor: Colors.white,
                     textStyle: const TextStyle(fontWeight: FontWeight.bold),
                     shadowColor: Colors.greenAccent,
-                    elevation: 5, 
+                    elevation: 5,
                   ),
                   child: const Text('Add'),
                 ),
+                const SizedBox(width: 10), 
                 ElevatedButton(
-                  onPressed: _decreaseQuantity,
+                  // Set onPressed to null when quantity is zero
+                  onPressed: _quantity > 0 ? _decreaseQuantity : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.black,
                     textStyle: const TextStyle(fontWeight: FontWeight.bold),
                     shadowColor: Colors.greenAccent,
-                    elevation: 5, 
+                    elevation: 5,
                   ),
                   child: const Text('Remove'),
                 ),
