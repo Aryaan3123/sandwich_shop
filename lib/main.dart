@@ -25,8 +25,11 @@ class OrderScreen extends StatefulWidget {
   }
 }
 
+enum SandwichType { footlong, sixInch }
+
 class _OrderScreenState extends State<OrderScreen> {
   int _quantity = 0;
+  SandwichType _selectedSandwichType = SandwichType.footlong;
   final TextEditingController _textController = TextEditingController();
 
   @override
@@ -55,7 +58,28 @@ class _OrderScreenState extends State<OrderScreen> {
           children: <Widget>[
             OrderItemDisplay(
               _quantity,
-              'Footlong',
+              _selectedSandwichType == SandwichType.footlong
+                  ? 'Footlong'
+                  : 'Six-inch',
+            ),
+            const SizedBox(height: 20),
+            DropdownButton<SandwichType>(
+              value: _selectedSandwichType,
+              onChanged: (SandwichType? newValue) {
+                setState(() {
+                  _selectedSandwichType = newValue!;
+                });
+              },
+              items: const [
+                DropdownMenuItem<SandwichType>(
+                  value: SandwichType.footlong,
+                  child: Text('Footlong'),
+                ),
+                DropdownMenuItem<SandwichType>(
+                  value: SandwichType.sixInch,
+                  child: Text('Six-inch'),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             Padding(
@@ -84,7 +108,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   ),
                   child: const Text('Add'),
                 ),
-                const SizedBox(width: 10), 
+                const SizedBox(width: 10),
                 ElevatedButton(
                   // Set onPressed to null when quantity is zero
                   onPressed: _quantity > 0 ? _decreaseQuantity : null,
