@@ -10,9 +10,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      title: 'Sandwich Shop',
-      home: OrderScreen(maxQuantity: 5)
-    );
+        title: 'Sandwich Shop', home: OrderScreen(maxQuantity: 5));
   }
 }
 
@@ -29,6 +27,13 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   int _quantity = 0;
+  final TextEditingController _textController = TextEditingController();
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
 
   void _increaseQuantity() {
     if (_quantity < widget.maxQuantity) {
@@ -55,6 +60,17 @@ class _OrderScreenState extends State<OrderScreen> {
             OrderItemDisplay(
               _quantity,
               'Footlong',
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _textController,
+                decoration: const InputDecoration(
+                  hintText: 'Enter Preferences...',
+                  border: OutlineInputBorder(),
+                ),
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
