@@ -83,14 +83,14 @@ void main() {
       expect(find.text('footlong'), findsOneWidget);
 
       // Switch to six-inch
-      await tester.tap(find.byType(Switch));
+      await tester.tap(find.byKey(const Key('sandwich_type_switch')));
       await tester.pump();
 
       // Show six-inch sandwiches
       expect(find.text('0 white six-inch sandwich(es): '), findsOneWidget);
 
       // Switch again back to footlong
-      await tester.tap(find.byType(Switch));
+      await tester.tap(find.byKey(const Key('sandwich_type_switch')));
       await tester.pump();
 
       // should be footlong
@@ -111,14 +111,14 @@ void main() {
       expect(find.text('2 white footlong sandwich(es): 🥪🥪'), findsOneWidget);
 
       // Toggle to six-inch
-      await tester.tap(find.byType(Switch));
+      await tester.tap(find.byKey(const Key('sandwich_type_switch')));
       await tester.pump();
 
       // Should now show 2 six-inch sandwiches
       expect(find.text('2 white six-inch sandwich(es): 🥪🥪'), findsOneWidget);
 
       // Toggle to footlong
-      await tester.tap(find.byType(Switch));
+      await tester.tap(find.byKey(const Key('sandwich_type_switch')));
       await tester.pump();
 
       // Should show 2 footlong sandwiches again
