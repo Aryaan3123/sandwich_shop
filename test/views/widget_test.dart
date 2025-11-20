@@ -56,7 +56,6 @@ void main() {
           findsOneWidget);
     });
   });
-
   group('OrderScreen - Controls', () {
     testWidgets('changes bread type with DropdownMenu',
         (WidgetTester tester) async {
@@ -72,6 +71,58 @@ void main() {
       await tester.pumpAndSettle();
       expect(
           find.textContaining('wholemeal footlong sandwich'), findsOneWidget);
+    });
+
+    testWidgets('toggles sandwich size with Switch widget',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+
+      // Show footlong by default
+      expect(find.text('0 white footlong sandwich(es): '), findsOneWidget);
+      expect(find.text('six-inch'), findsOneWidget);
+      expect(find.text('footlong'), findsOneWidget);
+
+      // Switch to six-inch
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+
+      // Show six-inch sandwiches
+      expect(find.text('0 white six-inch sandwich(es): '), findsOneWidget);
+
+      // Switch again back to footlong
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+
+      // should be footlong
+      expect(find.text('0 white footlong sandwich(es): '), findsOneWidget);
+    });
+
+    testWidgets('Switch toggle affects sandwich display with quantity',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+
+      // Add 2 sandwiches first
+      await tester.tap(find.widgetWithText(ElevatedButton, 'Add'));
+      await tester.pump();
+      await tester.tap(find.widgetWithText(ElevatedButton, 'Add'));
+      await tester.pump();
+
+      // Should show 2 footlong sandwiches
+      expect(find.text('2 white footlong sandwich(es): 🥪🥪'), findsOneWidget);
+
+      // Toggle to six-inch
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+
+      // Should now show 2 six-inch sandwiches
+      expect(find.text('2 white six-inch sandwich(es): 🥪🥪'), findsOneWidget);
+
+      // Toggle to footlong
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+
+      // Should show 2 footlong sandwiches again
+      expect(find.text('2 white footlong sandwich(es): 🥪🥪'), findsOneWidget);
     });
 
     testWidgets('updates note with TextField', (WidgetTester tester) async {
