@@ -8,11 +8,13 @@ A modern, interactive Flutter application for ordering custom sandwiches. Built 
 - **Interactive Sandwich Counter**: Add/remove sandwiches with smart button states
 - **Customizable Orders**: Choose bread type (White, Wheat, Wholemeal) 
 - **Size Selection**: Toggle between 6-inch and Footlong sandwiches
+- **Real-time Pricing**: Live price calculation (£7 for 6-inch, £11 for footlong)
 - **Order Notes**: Add special instructions for your sandwich
 - **Real-time Display**: Live preview of your order with sandwich emojis 🥪
 
 ### Technical Features
 - **Repository Pattern**: Clean separation of business logic and UI
+- **Price Management**: Dedicated PricingRepository for cost calculations
 - **State Management**: Efficient state handling with proper validation
 - **Automatic Button States**: Add/Remove buttons automatically disable when limits are reached
 - **Input Validation**: Smart quantity limits and user feedback
@@ -45,7 +47,7 @@ Ensure you have the following installed on your system:
 #### First Time Setup
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/sandwich_shop.git
+git clone https://github.com/Aryaan3123/sandwich_shop.git
 cd sandwich_shop
 
 # Get dependencies
@@ -86,13 +88,21 @@ flutter run
    - Toggle switch to choose **6-inch** or **Footlong**
    - Select bread type from dropdown menu
    - Add special notes in the text field
+   - **View real-time price updates** as you customize your order
 
 3. **View Your Order**
    - See real-time order summary with sandwich count and emojis
+   - **Live price display** showing total cost in green
    - Notes display shows "No notes added." when empty
    - Buttons automatically disable at quantity limits
 
 ### Advanced Features
+
+#### Pricing System
+- **6-inch sandwiches**: £7.00 each
+- **Footlong sandwiches**: £11.00 each  
+- **Real-time calculation**: Price updates instantly when you change quantity or size
+- **Professional formatting**: Currency display with proper decimal places
 
 #### Custom Bread Types
 - **White** (default)
@@ -148,7 +158,8 @@ test('quantity should not exceed maxQuantity', () {
 lib/
 ├── main.dart                     # App entry point & main UI
 ├── repositories/
-│   └── order_repository.dart     # Business logic for orders
+│   ├── order_repository.dart     # Business logic for orders
+│   └── pricing_repository.dart   # Price calculation logic
 └── views/
     └── app_styles.dart          # UI styling constants
 
@@ -162,6 +173,7 @@ test/
 
 #### Repository Pattern
 - **OrderRepository**: Manages quantity state and business rules
+- **PricingRepository**: Handles all price calculations and constants
 - **Separation of Concerns**: UI components stay focused on presentation
 - **Testability**: Business logic can be tested independently
 
@@ -180,6 +192,18 @@ class OrderRepository {
   bool get canDecrement;         // Can remove items?
   void increment();              // Add sandwich
   void decrement();              // Remove sandwich
+}
+```
+
+#### PricingRepository
+```dart
+class PricingRepository {
+  static const double sixInchPrice = 7.0;   // £7 for 6-inch
+  static const double footlongPrice = 11.0; // £11 for footlong
+  
+  double calculateTotalPrice(int quantity, bool isFootlong) {
+    return (isFootlong ? footlongPrice : sixInchPrice) * quantity;
+  }
 }
 ```
 
@@ -203,9 +227,14 @@ OrderItemDisplay(
    - Add corresponding tests
 
 2. **New Business Logic**
-   - Extend `OrderRepository` class
+   - Extend `OrderRepository` or `PricingRepository` classes
    - Add unit tests for new functionality
    - Update UI components as needed
+
+3. **Pricing Changes**
+   - Modify constants in `PricingRepository`
+   - Update tests to reflect new prices
+   - Consider adding price configuration options
 
 ### Code Style
 - Follow [Dart Style Guide](https://dart.dev/guides/language/effective-dart/style)
@@ -281,12 +310,14 @@ flutter test test/widget_test.dart -v
 - **Repository Pattern**: Separating business logic  
 - **Form Input**: Handling user text input
 - **Testing**: Unit and widget test strategies
+- **Price Calculation**: Real-time cost computation
 
 ### Next Steps
 - Explore state management with Provider/Riverpod
 - Add data persistence with local storage
 - Implement navigation between multiple screens
 - Add animations and transitions
+- Extend pricing with discounts and promotions
 
 ## 🤝 Contributing
 
