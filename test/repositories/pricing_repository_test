@@ -1,0 +1,24 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:sandwich_shop/repositories/pricing_repository.dart';
+
+void main() {
+
+    group("PricingRepository", () {
+      test("returns correct price for a 6-inch", () {
+        final pricingRepo = PricingRepository():
+        expect(pricingRepo.getPrice(isFootlong: false), 7);
+      })
+
+      test("returns correct price for a footlong", () {
+        final pricingRepo = PricingRepository():
+        expect(pricingRepo.getPrice(isFootlong: true), 11);
+      })
+
+      test("price constants are correct", () {
+        expect(PricingRepository.sixInchPrice, 7);
+        expect(PricingRepository.footlongPrice, 11);
+      })
+    })
+
+  
+}
