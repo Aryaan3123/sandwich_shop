@@ -67,14 +67,43 @@ class _OrderScreenState extends State<OrderScreen> {
       });
       String sizeText = _isFootlong ? 'footlong' : 'six-inch';
       String confirmationMessage =
-          'Added $_quantity $sizeText ${sandwich.name} sandwich(es) on ${_selectedBreadType.name} bread to cart';
-
-      // Show snackbar confirmation
+          'Added $_quantity $sizeText ${sandwich.name} sandwich(es) on ${_selectedBreadType.name} bread to cart'; // Show snackbar confirmation
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(confirmationMessage),
-          duration: const Duration(seconds: 2),
+          duration: const Duration(seconds: 3),
           backgroundColor: Colors.green,
+          action: SnackBarAction(
+            label: 'VIEW CART',
+            textColor: Colors.white,
+            onPressed: () {
+              // Show cart dialog when user taps VIEW CART
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Cart Contents'),
+                  content: SingleChildScrollView(
+                    child: Text(_cart.getSummary()),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Close'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          _cart.clear();
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Clear Cart'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       );
 
