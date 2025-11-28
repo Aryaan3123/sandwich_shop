@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'views/app_styles.dart';
 
 enum BreadType { white, wheat, wholemeal }
-// Worksheet 5 
+
+// Worksheet 5
 void main() {
   runApp(const App());
 }
@@ -108,7 +109,12 @@ class _OrderScreenState extends State<OrderScreen> {
       appBar: AppBar(
         leading: SizedBox(
           height: 100,
-          child: Image.asset('assets/images/logo.png'),
+          child: Image.asset(
+            'assets/images/logo.png',
+            errorBuilder: (context, error, stackTrace) {
+              return const Icon(Icons.restaurant, size: 40);
+            },
+          ),
         ),
         title: const Text(
           'Sandwich Counter',
