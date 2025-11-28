@@ -60,8 +60,7 @@ void main() {
       await tester.pump();
       expect(find.text('1'), findsOneWidget);
     });
-
-    testWidgets('does not decrement below 1', (WidgetTester tester) async {
+    testWidgets('does not decrement below 0', (WidgetTester tester) async {
       await tester.pumpWidget(const App());
       expect(find.text('1'), findsOneWidget);
 
@@ -69,7 +68,7 @@ void main() {
       await tester.tap(find.byIcon(Icons.remove));
       await tester.pump();
 
-      // Should still be 0 (minimum allowed)
+      // Should be 0 (minimum allowed)
       expect(find.text('0'), findsOneWidget);
     });
   });
@@ -120,41 +119,141 @@ void main() {
       expect(find.text('wheat'), findsAtLeastNWidgets(1));
     });
   });
-
   group('OrderScreen - Cart Functionality', () {
-    testWidgets('adds item to cart when Add to Cart is tapped',
+    testWidgets('cart summary is hidden when cart is empty',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+
+      // Initially cart should be empty and summary should not be visible
+      expect(find.text('Cart Summary'), findsNothing);
+      expect(find.text('Total Items: 0'), findsNothing);
+      expect(find.textContaining('Total Price: £'), findsNothing);
+    });
+    testWidgets('adds item to cart and shows SnackBar confirmation',
         (WidgetTester tester) async {
       await tester.pumpWidget(const App());
 
       // Tap Add to Cart button
-      await tester.tap(find.widgetWithText(ElevatedButton, 'Add to Cart'));
+      await tester.tap(find.text('Add to Cart'));
       await tester.pump();
 
       // Should show snackbar confirmation
       expect(find.textContaining('Added'), findsOneWidget);
-
-      // Wait for snackbar to appear and dismiss
-      await tester.pumpAndSettle(const Duration(seconds: 3));
-
-      // Cart summary should appear
-      expect(find.text('Cart Summary'), findsOneWidget);
-      expect(find.text('Total Items: 1'), findsOneWidget);
+      expect(find.text('VIEW CART'), findsOneWidget);
     });
 
-    testWidgets('shows cart summary when items are added',
+    testWidgets('cart summary appears after adding first item',
         (WidgetTester tester) async {
       await tester.pumpWidget(const App());
 
       // Add item to cart
-      await tester.tap(find.widgetWithText(ElevatedButton, 'Add to Cart'));
+      await tester.tap(find.text('Add to Cart'));
       await tester.pump();
-      await tester.pumpAndSettle(const Duration(seconds: 3));
 
-      // Check cart summary elements
+      // Cart summary should appear immediately
       expect(find.text('Cart Summary'), findsOneWidget);
       expect(find.text('Total Items: 1'), findsOneWidget);
       expect(find.textContaining('Total Price: £'), findsOneWidget);
       expect(find.text('View Cart'), findsOneWidget);
+    });
+    testWidgets('cart summary updates correctly with multiple items',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+
+      // Increase quantity to 3
+      await tester.tap(find.byIcon(Icons.add)); // quantity becomes 2
+      await tester.pump();
+      await tester.tap(find.byIcon(Icons.add)); // quantity becomes 3
+      await tester.pump();
+
+      // Add 3 items to cart
+      await tester.tap(find.text('Add to Cart'));
+      await tester.pump();
+
+      // Check cart summary shows correct totals
+      expect(find.text('Cart Summary'), findsOneWidget);
+      expect(find.text('Total Items: 3'), findsOneWidget);
+      expect(find.text('Total Price: £33.00'),
+          findsOneWidget); // 3 * £11 for footlong
+    });
+    testWidgets('cart summary updates when adding different sandwiches',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+
+      // Add first sandwich (default: Veggie Delight, footlong, quantity 1)
+      await tester.tap(find.text('Add to Cart'));
+      await tester.pump();
+
+      expect(find.text('Total Items: 1'), findsOneWidget);
+      expect(find.text('Total Price: £11.00'), findsOneWidget);
+
+      // Change to six-inch (quantity should reset to 1 after previous add)
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+
+      // Add second sandwich (six-inch, quantity 1)
+      await tester.tap(find.text('Add to Cart'));
+      await tester.pump();
+
+      // Cart should now have 2 items with different prices
+      expect(find.text('Total Items: 2'), findsOneWidget);
+      expect(find.text('Total Price: £18.00'), findsOneWidget); // £11 + £7
+    });
+    testWidgets('View Cart button shows detailed cart dialog',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+
+      // Add item to cart
+      await tester.tap(find.text('Add to Cart'));
+      await tester.pump();
+
+      // Tap View Cart button in cart summary
+      await tester.tap(find.text('View Cart'));
+      await tester.pumpAndSettle();
+
+      // Check dialog appears with cart contents
+      expect(find.text('Cart Contents'), findsOneWidget);
+      expect(find.textContaining('Veggie Delight'), findsOneWidget);
+      expect(find.text('Close'), findsOneWidget);
+      expect(find.text('Clear Cart'), findsOneWidget);
+    });
+
+    testWidgets('Clear Cart button empties cart and hides summary',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+
+      // Add item to cart
+      await tester.tap(find.text('Add to Cart'));
+      await tester.pump();
+
+      expect(find.text('Cart Summary'), findsOneWidget);
+
+      // Open cart dialog and clear cart
+      await tester.tap(find.text('View Cart'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Clear Cart'));
+      await tester.pumpAndSettle();
+
+      // Cart summary should disappear
+      expect(find.text('Cart Summary'), findsNothing);
+      expect(find.text('Total Items: 0'), findsNothing);
+    });
+
+    testWidgets('SnackBar VIEW CART button opens cart dialog',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+
+      // Add item to cart to show SnackBar
+      await tester.tap(find.text('Add to Cart'));
+      await tester.pump();
+
+      // Tap VIEW CART in SnackBar
+      await tester.tap(find.text('VIEW CART'));
+      await tester.pumpAndSettle();
+
+      // Check cart dialog opens
+      expect(find.text('Cart Contents'), findsOneWidget);
+      expect(find.textContaining('Cart Summary:'), findsOneWidget);
     });
   });
   group('StyledButton', () {
