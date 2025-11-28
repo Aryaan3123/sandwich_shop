@@ -14,6 +14,7 @@ void main() {
   group('OrderScreen - Basic UI', () {
     testWidgets('shows initial UI elements', (WidgetTester tester) async {
       await tester.pumpWidget(const App());
+      await tester.pumpAndSettle();
       expect(find.text('Sandwich Counter'), findsOneWidget);
       expect(
           find.text('Veggie Delight'), findsOneWidget); // Default sandwich type

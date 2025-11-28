@@ -67,7 +67,7 @@ class _OrderScreenState extends State<OrderScreen> {
       });
       String sizeText = _isFootlong ? 'footlong' : 'six-inch';
       String confirmationMessage =
-          'Added $_quantity $sizeText ${sandwich.name} sandwich(es) on ${_selectedBreadType.name} bread to cart'; // Show snackbar confirmation
+          'Added $_quantity $sizeText ${sandwich.name} sandwich(es) on ${_selectedBreadType.name} bread to cart'; // Show snackbar 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(confirmationMessage),
