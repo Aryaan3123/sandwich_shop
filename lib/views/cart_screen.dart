@@ -6,6 +6,7 @@ import 'package:sandwich_shop/models/cart.dart';
 import 'package:sandwich_shop/models/sandwich.dart';
 import 'package:sandwich_shop/repositories/pricing_repository.dart';
 import 'package:sandwich_shop/views/checkout_screen.dart';
+import 'package:sandwich_shop/views/common_widgets.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -106,36 +107,8 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            height: 100,
-            child: Image.asset('assets/images/logo.png'),
-          ),
-        ),
-        title: Text(
-          'Cart View',
-          style: heading1,
-        ),
-        actions: [
-          Consumer<Cart>(
-            builder: (context, cart, child) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.shopping_cart),
-                    const SizedBox(width: 4),
-                    Text('${cart.countOfItems}'),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
-      ),
+      appBar: const CommonAppBar(title: 'Cart View'),
+      drawer: const CommonDrawer(currentRoute: '/cart'),
       body: Center(
         child: SingleChildScrollView(
           child: Consumer<Cart>(
@@ -145,10 +118,16 @@ class _CartScreenState extends State<CartScreen> {
                 children: [
                   const SizedBox(height: 20),
                   if (cart.items.isEmpty)
-                    Text(
-                      'Your cart is empty.',
-                      style: heading2,
-                      textAlign: TextAlign.center,
+                    EmptyStateWidget(
+                      icon: Icons.shopping_cart_outlined,
+                      title: 'Your cart is empty',
+                      message: 'Add some delicious sandwiches to get started!',
+                      action: StyledButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Icons.restaurant_menu,
+                        label: 'Browse Menu',
+                        backgroundColor: Colors.blue,
+                      ),
                     )
                   else
                     for (MapEntry<Sandwich, int> entry in cart.items.entries)

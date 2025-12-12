@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sandwich_shop/views/app_styles.dart';
+import 'package:sandwich_shop/views/common_widgets.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -37,23 +38,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
+        body: LoadingWidget(message: 'Loading settings...'),
       );
     }
-
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            height: 100,
-            child: Image.asset('assets/images/logo.png'),
-          ),
-        ),
-        title: Text('Settings', style: AppStyles.heading1),
-      ),
+      appBar: const CommonAppBar(title: 'Settings'),
+      drawer: const CommonDrawer(currentRoute: '/settings'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
