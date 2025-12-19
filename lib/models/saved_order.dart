@@ -1,8 +1,16 @@
+import 'package:json_annotation/json_annotation.dart';
+
+// This part directive links to the generated file
+part 'saved_order.g.dart';
+
+// Tell the generator to create serialization logic for this class
+@JsonSerializable()
 class SavedOrder {
   final int id;
   final String orderId;
   final double totalAmount;
   final int itemCount;
+  @JsonKey(name: 'orderDate')
   final DateTime orderDate;
 
   SavedOrder({
@@ -13,20 +21,9 @@ class SavedOrder {
     required this.orderDate,
   });
 
-  Map<String, Object?> toMap() {
-    return {
-      'orderId': orderId,
-      'totalAmount': totalAmount,
-      'itemCount': itemCount,
-      'orderDate': orderDate.millisecondsSinceEpoch,
-    };
-  }
+  // Generated code for deserialization
+  factory SavedOrder.fromJson(Map<String, dynamic> json) => _$SavedOrderFromJson(json);
 
-  SavedOrder.fromMap(Map<String, Object?> map)
-      : id = map['id'] as int,
-        orderId = map['orderId'] as String,
-        totalAmount = map['totalAmount'] as double,
-        itemCount = map['itemCount'] as int,
-        orderDate =
-            DateTime.fromMillisecondsSinceEpoch(map['orderDate'] as int);
+  // Generated code for serialization
+  Map<String, dynamic> toJson() => _$SavedOrderToJson(this);
 }

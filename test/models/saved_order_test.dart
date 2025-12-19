@@ -20,7 +20,7 @@ void main() {
       expect(order.orderDate, equals(testDate));
     });
 
-    testWidgets('toMap converts SavedOrder to Map correctly', (tester) async {
+    testWidgets('toJson converts SavedOrder to Map correctly', (tester) async {
       final DateTime testDate = DateTime(2023, 12, 25, 14, 30);
       final SavedOrder order = SavedOrder(
         id: 1,
@@ -30,7 +30,7 @@ void main() {
         orderDate: testDate,
       );
 
-      final Map<String, Object?> map = order.toMap();
+      final Map<String, Object?> map = order.toJson();
 
       expect(map['orderId'], equals('ORD123456'));
       expect(map['totalAmount'], equals(25.50));
@@ -39,7 +39,7 @@ void main() {
       expect(map.containsKey('id'), isFalse);
     });
 
-    testWidgets('fromMap creates SavedOrder from Map correctly',
+    testWidgets('fromJson creates SavedOrder from Map correctly',
         (tester) async {
       final DateTime testDate = DateTime(2023, 12, 25, 14, 30);
       final Map<String, Object?> map = {
@@ -50,7 +50,7 @@ void main() {
         'orderDate': testDate.millisecondsSinceEpoch,
       };
 
-      final SavedOrder order = SavedOrder.fromMap(map);
+      final SavedOrder order = SavedOrder.fromJson(map);
 
       expect(order.id, equals(1));
       expect(order.orderId, equals('ORD123456'));
@@ -59,7 +59,7 @@ void main() {
       expect(order.orderDate, equals(testDate));
     });
 
-    testWidgets('toMap and fromMap are inverse operations', (tester) async {
+    testWidgets('toJson and fromJson are inverse operations', (tester) async {
       final DateTime testDate = DateTime(2023, 12, 25, 14, 30);
       final SavedOrder originalOrder = SavedOrder(
         id: 1,
@@ -69,9 +69,9 @@ void main() {
         orderDate: testDate,
       );
 
-      final Map<String, Object?> map = originalOrder.toMap();
+      final Map<String, Object?> map = originalOrder.toJson();
       map['id'] = originalOrder.id;
-      final SavedOrder reconstructedOrder = SavedOrder.fromMap(map);
+      final SavedOrder reconstructedOrder = SavedOrder.fromJson(map);
 
       expect(reconstructedOrder.id, equals(originalOrder.id));
       expect(reconstructedOrder.orderId, equals(originalOrder.orderId));
@@ -90,9 +90,9 @@ void main() {
         orderDate: testDate,
       );
 
-      final Map<String, Object?> map = order.toMap();
+      final Map<String, Object?> map = order.toJson();
       map['id'] = order.id;
-      final SavedOrder reconstructedOrder = SavedOrder.fromMap(map);
+      final SavedOrder reconstructedOrder = SavedOrder.fromJson(map);
 
       expect(reconstructedOrder.id, equals(999));
       expect(reconstructedOrder.orderId, equals('ORD999999999'));

@@ -48,7 +48,7 @@ void main() {
         orderDate: testDate,
       );
 
-      final Map<String, Object?> map = order.toMap();
+      final Map<String, Object?> map = order.toJson();
       expect(map.containsKey('id'), isFalse);
       expect(map['orderId'], equals('ORD123456'));
       expect(map['totalAmount'], equals(25.50));

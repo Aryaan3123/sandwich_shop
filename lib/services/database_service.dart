@@ -34,7 +34,7 @@ class DatabaseService {
 
   Future<void> insertOrder(SavedOrder order) async {
     final Database db = await database;
-    await db.insert('orders', order.toMap());
+    await db.insert('orders', order.toJson());
   }
 
   Future<List<SavedOrder>> getOrders() async {
@@ -46,7 +46,7 @@ class DatabaseService {
 
     List<SavedOrder> orders = [];
     for (int i = 0; i < maps.length; i++) {
-      orders.add(SavedOrder.fromMap(maps[i]));
+      orders.add(SavedOrder.fromJson(maps[i]));
     }
     return orders;
   }
