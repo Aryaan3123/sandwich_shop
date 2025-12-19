@@ -68,6 +68,27 @@ flutter pub get
 flutter run
 ```
 
+## Testing
+
+To run integration tests:
+flutter test integration_test/
+
+## Deployment
+
+To build a release version:
+flutter build apk --release
+
+or for web:
+flutter build web --release
+
+hat to do	File/Location	What to add/change
+Add empty cart test	integration_test/app_test.dart	Add testWidgets('shows empty cart message ...') inside the main group
+Ensure happy path test	integration_test/app_test.dart	Ensure testWidgets('add a sandwich to the cart ...') is present
+Update README	README.md	Add instructions for running tests and building release
+Generate JSON code	Terminal	Run dart run build_runner build --delete-conflicting-outputs
+Run integration tests	Terminal	Run flutter test integration_test/
+Build release	Terminal	Run flutter build apk --release or flutter build web --release
+
 ## Get support
 
 Use [the dedicated Discord channel](https://discord.com/channels/760155974467059762/1370633732779933806)

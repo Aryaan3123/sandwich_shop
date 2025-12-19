@@ -135,6 +135,21 @@ void main() {
       expect(find.text('Cart: 0 items - £0.00'), findsOneWidget);
     });
 
+    testWidgets('shows empty cart message when cart is empty',
+        (WidgetTester tester) async {
+      app.main();
+      await tester.pumpAndSettle();
+
+      // Tap the "View Cart" button without adding anything
+      final viewCartButton = find.widgetWithText(StyledButton, 'View Cart');
+      await tester.ensureVisible(viewCartButton);
+      await tester.tap(viewCartButton);
+      await tester.pumpAndSettle();
+
+      // Check for empty cart message and disabled checkout
+      expect(find.text('Your cart is empty.'), findsOneWidget);
+      expect(find.widgetWithText(StyledButton, 'Checkout'), findsNothing);
+    });
     // Feel free to add more tests (e.g., to check saved orders, etc.)
   });
 }
