@@ -81,13 +81,38 @@ flutter build apk --release
 or for web:
 flutter build web --release
 
-hat to do	File/Location	What to add/change
-Add empty cart test	integration_test/app_test.dart	Add testWidgets('shows empty cart message ...') inside the main group
-Ensure happy path test	integration_test/app_test.dart	Ensure testWidgets('add a sandwich to the cart ...') is present
-Update README	README.md	Add instructions for running tests and building release
-Generate JSON code	Terminal	Run dart run build_runner build --delete-conflicting-outputs
-Run integration tests	Terminal	Run flutter test integration_test/
-Build release	Terminal	Run flutter build apk --release or flutter build web --release
+# Sandwich Shop
+
+## Running the App
+
+To run the app in debug mode (with hot reload):
+```bash
+flutter run -d chrome
+```
+
+## Testing
+
+To run integration tests:
+```bash
+flutter test integration_test/
+```
+
+## Deployment (Web)
+
+To build a release version for web:
+```bash
+flutter build web --release
+```
+- The release build will be in the `build/web` folder.
+- Serve it with a local web server (e.g., `python -m http.server 8080` inside `build/web`) and open [http://localhost:8080](http://localhost:8080) in your browser.
+
+## Debug vs Release Web Build
+
+- **Debug build:** Larger, slower, includes debug banners, not optimized.
+- **Release build:** Smaller, faster, no debug banners, optimized for users.
+- **To compare:**  
+  - Run `du -sh build/web` after each build to see the size difference.
+  - Serve and open `build/web/index.html` in your browser and compare load speed and UI.
 
 ## Get support
 
