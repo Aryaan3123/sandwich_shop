@@ -20,9 +20,9 @@ class SavedOrder {
     required this.itemCount,
     required this.orderDate,
   });
-
   // Generated code for deserialization
-  factory SavedOrder.fromJson(Map<String, dynamic> json) => _$SavedOrderFromJson(json);
+  factory SavedOrder.fromJson(Map<String, dynamic> json) =>
+      _$SavedOrderFromJson(json);
 
   // Generated code for serialization
   Map<String, dynamic> toJson() => _$SavedOrderToJson(this);

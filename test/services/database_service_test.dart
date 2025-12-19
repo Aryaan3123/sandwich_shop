@@ -38,7 +38,7 @@ void main() {
       expect(order.orderDate, equals(testDate));
     });
 
-    testWidgets('SavedOrder toMap excludes id field', (tester) async {
+    testWidgets('SavedOrder toJson excludes id field', (tester) async {
       final DateTime testDate = DateTime(2023, 12, 25, 14, 30);
       final SavedOrder order = SavedOrder(
         id: 1,
@@ -56,4 +56,27 @@ void main() {
       expect(map['orderDate'], equals(testDate.millisecondsSinceEpoch));
     });
   });
+
+  testWidgets('SavedOrder toJson includes all fields', (tester) async {
+  final DateTime testDate = DateTime(2023, 12, 25, 14, 30);
+  final SavedOrder order = SavedOrder(
+    id: 1,
+    orderId: 'ORD123456',
+    totalAmount: 25.50,
+    itemCount: 3,
+    orderDate: testDate,
+  );
+
+  final Map<String, dynamic> json = order.toJson();
+  
+  // json_serializable includes ALL fields, including id
+  expect(json.containsKey('id'), isTrue);
+  expect(json['id'], equals(1));
+  expect(json['orderId'], equals('ORD123456'));
+  expect(json['totalAmount'], equals(25.50));
+  expect(json['itemCount'], equals(3));
+  
+  // DateTime is serialized as ISO string by default
+  expect(json['orderDate'], isA<String>());
+});
 }
